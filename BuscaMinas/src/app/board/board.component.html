@@ -1,0 +1,62 @@
+
+<p>Escoge la dificultad</p>
+<select (change)="changeDifficulty()" [(ngModel)]="difficulty" class="et">
+    <option *ngFor="let mode of this.getDifficultys()" value="{{mode}}">{{mode}}</option>
+</select>
+<br>
+<!-- <div class="flag">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>flag</title><path d="M14.4,6L14,4H5V21H7V14H12.6L13,16H20V6H14.4Z" /></svg>
+    {{ numberOfFlags }} 
+</div> -->
+<p>Numero de minas: {{numberOfMines}}</p>
+<p>Numero de banderas: {{numberOfFlags}}</p>
+<div *ngIf="gameState == 1 || gameState == 0 || gameState == 2">
+    <table class="Game">
+        <tr *ngFor="let rows of board; index as y;">
+            <td *ngFor="let cell of rows; index as x;" 
+            (click)="gameState == 1 && checkCell(y, x)" 
+            (contextmenu)="gameState == 1 && flag(cell)" 
+            [ngClass]="{'closedCell': cell.status != 'open' && !(gameState == 0 && cell.mine) }"
+            >
+                <div 
+                *ngIf="cell.status =='open' && cell.mineProximity != 0" 
+                class="celdas"
+                >
+                    {{cell.mineProximity}}
+                </div>
+
+                <div *ngIf="cell.status == 'mine'" 
+                class="mine"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" 
+                    width="1em" height="1em" 
+                    viewBox="0 0 24 24"
+                    >
+                        <path 
+                        fill="#cb2a2a" 
+                        d="M23 13v-2h-3.07a8 8 0 0 0-1.62-3.9l2.19-2.17l-1.43-1.43l-2.17 2.19A8 8 0 0 0 13 4.07V1h-2v3.07c-1.42.18-2.77.74-3.9 1.62L4.93 3.5L3.5 4.93L5.69 7.1A8 8 0 0 0 4.07 11H1v2h3.07c.18 1.42.74 2.77 1.62 3.9L3.5 19.07l1.43 1.43l2.17-2.19c1.13.88 2.48 1.44 3.9 1.62V23h2v-3.07c1.42-.18 2.77-.74 3.9-1.62l2.17 2.19l1.43-1.43l-2.19-2.17a8 8 0 0 0 1.62-3.9zM12 8a4 4 0 0 0-4 4H6a6 6 0 0 1 6-6z"/>
+                    </svg>
+                </div>
+
+
+                <div 
+                *ngIf="cell.status == 'flag'">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>flag</title><path d="M14.4,6L14,4H5V21H7V14H12.6L13,16H20V6H14.4Z" /></svg>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="Win">
+    <h3 *ngIf="gameState == 2" >Felicidades. Ganaste!!!</h3>
+</div>
+
+<div class="Lose">
+    <h3 *ngIf="gameState == 0" >Perdiste. Vuelve a Intentarlo</h3>
+</div>
+
+<div class="reset">
+    <button (click)="reset()" *ngIf="gameState == 0 || gameState == 2">Reset</button>
+</div>
+
