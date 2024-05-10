@@ -13,7 +13,7 @@ export class BoardComponent {
   
   board: Cell[][] = [];
   gameState: GameState = GameState.playing;
-
+  notStart: boolean = true;
   rows: number;
   columns: number;
   numberOfMines: number;
@@ -27,12 +27,22 @@ export class BoardComponent {
     this.columns = 5;
     this.numberOfMines = this.numberOfFlags = 0;
     this.difficulty = "Easy"
+    this.notStart = true;
     this.cellsGame = {cellsOpened: 0, cells: this.rows * this.columns, numberMines: this.numberOfMines};
     this.changeDifficulty();
   }
 
 
   checkCell(row: number, column: number){
+    if(this.notStart && this.board[row][column].status != 'flag'){
+      this.board = this.cellService.buildBoard(this.rows, this.columns, 0);
+      this.cellService.putMines(this.numberOfMines,this.board, this.rows, this.columns, row, column);
+      this.cellService.GetMineProximity(this.board, this.rows, this.columns);
+      this.numberOfFlags = this.numberOfMines;
+      this.notStart = false;
+    }
+
+
     let PnumberOfFlags: any = {flags: 0};
     if(this.board[row][column].status != 'flag'){
       this.cellService.openCell(this.board, row, column, this.rows, this.columns, this.cellsGame, PnumberOfFlags);
@@ -58,6 +68,7 @@ export class BoardComponent {
 
   reset(){
     this.board = this.cellService.buildBoard(this.rows, this.columns, this.numberOfMines);
+    this.notStart = true;
     this.gameState = GameState.playing;
     this.cellsGame = {cellsOpened: 0, cells: this.rows * this.columns, numberMines: this.numberOfMines};
     this.numberOfFlags = this.numberOfMines;

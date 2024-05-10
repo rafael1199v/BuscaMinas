@@ -4,10 +4,7 @@
     <option *ngFor="let mode of this.getDifficultys()" value="{{mode}}">{{mode}}</option>
 </select>
 <br>
-<!-- <div class="flag">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>flag</title><path d="M14.4,6L14,4H5V21H7V14H12.6L13,16H20V6H14.4Z" /></svg>
-    {{ numberOfFlags }} 
-</div> -->
+
 <p>Numero de minas: {{numberOfMines}}</p>
 <p>Numero de banderas: {{numberOfFlags}}</p>
 <div *ngIf="gameState == 1 || gameState == 0 || gameState == 2">
@@ -17,6 +14,7 @@
             (click)="gameState == 1 && checkCell(y, x)" 
             (contextmenu)="gameState == 1 && flag(cell)" 
             [ngClass]="{'closedCell': cell.status != 'open' && !(gameState == 0 && cell.mine) }"
+            class="k"
             >
                 <div 
                 *ngIf="cell.status =='open' && cell.mineProximity != 0" 

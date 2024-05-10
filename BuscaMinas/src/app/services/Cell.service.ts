@@ -16,22 +16,28 @@ export class CellService{
             board.push(rows);
         }
 
-
-        this.putMines(numberOfMines, board, rows, columns);
-        this.GetMineProximity(board, rows, columns);
-
         return board;
     }
 
 
-    putMines(numberOfMines: number, board: Cell[][], rows: number, columns: number) : Cell[][]{
+    putMines(numberOfMines: number, board: Cell[][], rows: number, columns: number, cellR: number, cellC: number) : Cell[][]{
         let set = new Set<([number, number])>;
         let i: number = 0;
-
+        console.log(cellR, "And", cellC)
         while(i < numberOfMines){
             let pairs: [number, number] = [Math.floor(Math.random() * (rows)), Math.floor(Math.random() * (columns))];
-
-            if(!set.has(pairs) && !board[pairs[0]][pairs[1]].mine){
+            console.log(pairs);
+            if((cellR == pairs[0] && cellC == pairs[1])){
+                continue;
+            }
+            else if((pairs[0] <= cellR + 1 && pairs[0] >= cellR - 1) && (pairs[1] <= cellC + 1 && pairs[1] >= cellC - 1)){
+                continue;
+            }
+            else if(set.has(pairs) || board[pairs[0]][pairs[1]].mine){
+                continue;
+            }
+            else
+            {
                 set.add(pairs);
                 board[pairs[0]][pairs[1]].mine = true;
                 i++;

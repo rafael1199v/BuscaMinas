@@ -6,6 +6,8 @@
     margin-right: auto;
 }
 
+
+
 td{
     border: 1px solid grey;
     border-collapse: collapse;
@@ -38,4 +40,8 @@ td{
 
 .et{
     margin-bottom: 10px;
+}
+
+.k{
+    transition: background-color 0.5s ease;
 }
